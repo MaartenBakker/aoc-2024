@@ -28,7 +28,6 @@ function changeDirection(direction: Direction): Direction {
 
 
 function loopDetected(coordinate: Coordinate, visited: Map<string, Coordinate[]>): boolean {
-
     const loopDetected = visited.get(serialize(coordinate))?.some(visitedCoordinate => visitedCoordinate.direction === coordinate.direction)
     return loopDetected!!
 }
