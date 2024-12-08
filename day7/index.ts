@@ -3,16 +3,20 @@ import input from './input'
 
 const equations = input.split('\n')
 
-function operateOnNumberPair(a: number, b: number, testValue: number) {
-    const results = []
+function operate(value: number, index: number, numbers: number[], testValue: number) {
+    const addResult = value + numbers[index + 1]
+    if (index === numbers.length - 2 && addResult === testValue) return true
+    else if (index < numbers.length - 2 && operate(addResult, index + 1, numbers, testValue)) return true
 
-    results.push(a + b)
-    results.push(a * b)
-    results.push(parseInt(`${a}${b}`))
+    const multiplyResult = value * numbers[index + 1]
+    if (index === numbers.length - 2 && multiplyResult === testValue) return true
+    else if (index < numbers.length - 2 && operate(multiplyResult, index + 1, numbers, testValue)) return true
 
-    // If the result are larger than the testValue, we don't need to handle them further
-    return results.filter(result => result <= testValue)
+    const concatResult = parseInt(`${value}${numbers[index + 1]}`)
+    if (index === numbers.length - 2 && concatResult === testValue) return true
+    else if (index < numbers.length - 2 && operate(concatResult, index + 1, numbers, testValue)) return true
 
+    return false
 }
 
 // part one and two
@@ -22,22 +26,8 @@ let totalCalibrationResult = 0
 for (let equation of equations) {
     const testValue = parseInt(equation.split(': ')[0])
     const numbers = equation.split(': ')[1].split(' ').map(str => parseInt(str))
-    let values = new Set<number>()
-    values.add(numbers[0])
 
-    for (let number of numbers.toSpliced(0, 1)) {
-
-        let newValues = new Set<number>()
-        for (let value of values) {
-            const results = operateOnNumberPair(value, number, testValue)
-            for (let number of results) {
-                newValues.add(number)
-            }
-        }
-        values = newValues
-    }
-
-    if (values.has(testValue)) {
+    if (operate(numbers[0], 0, numbers, testValue)) {
         totalCalibrationResult += testValue
     }
 }
