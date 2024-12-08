@@ -5,16 +5,17 @@ const equations = input.split('\n')
 
 function operate(value: number, index: number, numbers: number[], testValue: number) {
     const addResult = value + numbers[index + 1]
-    if (index === numbers.length - 2 && addResult === testValue) return true
-    else if (index < numbers.length - 2 && operate(addResult, index + 1, numbers, testValue)) return true
+    const lastIndexReached = index === numbers.length - 2
+    if (lastIndexReached && addResult === testValue) return true
+    else if (!lastIndexReached && operate(addResult, index + 1, numbers, testValue)) return true
 
     const multiplyResult = value * numbers[index + 1]
-    if (index === numbers.length - 2 && multiplyResult === testValue) return true
-    else if (index < numbers.length - 2 && operate(multiplyResult, index + 1, numbers, testValue)) return true
+    if (lastIndexReached && multiplyResult === testValue) return true
+    else if (!lastIndexReached && operate(multiplyResult, index + 1, numbers, testValue)) return true
 
     const concatResult = parseInt(`${value}${numbers[index + 1]}`)
-    if (index === numbers.length - 2 && concatResult === testValue) return true
-    else if (index < numbers.length - 2 && operate(concatResult, index + 1, numbers, testValue)) return true
+    if (lastIndexReached && concatResult === testValue) return true
+    else if (!lastIndexReached && operate(concatResult, index + 1, numbers, testValue)) return true
 
     return false
 }
