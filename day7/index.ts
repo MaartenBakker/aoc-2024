@@ -3,21 +3,14 @@ import input from './input'
 
 const equations = input.split('\n')
 
-function operate(value: number, index: number, numbers: number[], testValue: number) {
-    const addResult = value + numbers[index + 1]
+function operate(value: number, index: number, numbers: number[], testValue: number): boolean {
     const lastIndexReached = index === numbers.length - 2
-    if (lastIndexReached && addResult === testValue) return true
-    else if (!lastIndexReached && operate(addResult, index + 1, numbers, testValue)) return true
+    const attempt = (result: number) =>
+        lastIndexReached ? result === testValue : operate(result, index + 1, numbers, testValue)
 
-    const multiplyResult = value * numbers[index + 1]
-    if (lastIndexReached && multiplyResult === testValue) return true
-    else if (!lastIndexReached && operate(multiplyResult, index + 1, numbers, testValue)) return true
-
-    const concatResult = parseInt(`${value}${numbers[index + 1]}`)
-    if (lastIndexReached && concatResult === testValue) return true
-    else if (!lastIndexReached && operate(concatResult, index + 1, numbers, testValue)) return true
-
-    return false
+    return attempt(value + numbers[index + 1])
+        || attempt(value * numbers[index + 1])
+        || attempt(parseInt(`${value}${numbers[index + 1]}`))
 }
 
 // part one and two
