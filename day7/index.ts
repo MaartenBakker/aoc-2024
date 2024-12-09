@@ -10,7 +10,8 @@ function operate(value: number, index: number, numbers: number[], testValue: num
 
     return attempt(value + numbers[index + 1])
         || attempt(value * numbers[index + 1])
-        || attempt(parseInt(`${value}${numbers[index + 1]}`))
+        || attempt(parseInt(`${value}${numbers[index + 1]}`)
+        )
 }
 
 // part one and two
